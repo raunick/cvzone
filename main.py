@@ -6,6 +6,19 @@ mp_hands = mp.solutions.hands
 hands = mp_hands.Hands()
 
 cap = cv2.VideoCapture(0)
+def contar_dedos_levantados(pontos_mao):
+    pontos_dedos = [mp_hands.HandLandmark.INDEX_FINGER_TIP,
+                    mp_hands.HandLandmark.MIDDLE_FINGER_TIP,
+                    mp_hands.HandLandmark.RING_FINGER_TIP,
+                    mp_hands.HandLandmark.PINKY_TIP]
+
+    dedos_levantados = 0
+
+    for ponto in pontos_dedos:
+        if pontos_mao.landmark[ponto].y < pontos_mao.landmark[mp_hands.HandLandmark.PINKY_MCP].y:
+            dedos_levantados += 1
+
+    return dedos_levantados
 
 if not cap.isOpened():
     print("Não foi possível abrir a câmera.")
@@ -34,7 +47,8 @@ while True:
                 cx, cy = int(landmark.x * width), int(landmark.y * height)
                 #printa os pontos da mão
                 print(f'Ponto {idx}: ({cx}, {cy})')
-
+            t = contar_dedos_levantados(hand_landmarks)
+            print(f'dedos levantados:{t}')
             mp_drawing.draw_landmarks(frame, hand_landmarks, mp_hands.HAND_CONNECTIONS)
 
     cv2.imshow(windowName, frame)
