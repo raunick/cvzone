@@ -34,7 +34,7 @@ mdurl==0.1.2
 mediapipe==0.10.9
 numpy==1.26.3
 opencv-contrib-python==4.9.0.80
-opencv-python
+opencv-python-headless
 packaging==23.2
 pandas==2.1.4
 pillow==10.2.0
